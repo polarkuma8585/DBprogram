@@ -34,14 +34,13 @@ public class EmployeeDBProc {
 			} else if (menu == 6) {
 				break;
 			}
-			System.out.println("인사 프로그램을 종료합니다.");
-
+			
 		}
+		System.out.println("인사 프로그램을 종료합니다.");
 
 	}
 
 	public void insertEmployee() {
-		System.out.println("사원 등록");
 		System.out.println("사원 이름 등록");
 		String name = sc.nextLine();
 		System.out.println("부서 등록");
@@ -80,6 +79,13 @@ public class EmployeeDBProc {
 		EmployeeDB empdb = new EmployeeDB();
 		empdb.setDept(dept);
 		service.getDeptEmployee(empdb);
+//		System.out.println(empdb);
+		
+		System.out.println("소속 부서: "+ empdb.getDept());
+		System.out.println("사원아이디: " + empdb.getId());
+		System.out.println("사원 이름: " + empdb.getName());
+		System.out.println("급여: " + empdb.getSalary());
+		System.out.println("입사일: " + empdb.getDate());
 
 	}
 

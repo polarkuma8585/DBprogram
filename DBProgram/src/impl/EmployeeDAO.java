@@ -48,7 +48,7 @@ public class EmployeeDAO {
 			pstmt.setString(1, name);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
-				EmployeeDB empldb = new EmployeeDB();
+				empl = new EmployeeDB();
 				empl.setId(rs.getInt("employee_id"));
 				empl.setName(rs.getString("name"));
 				empl.setDept(rs.getString("dept"));
@@ -72,12 +72,11 @@ public class EmployeeDAO {
 
 	public List<EmployeeDB> getListByDept(EmployeeDB empdb) {
 		conn = DAO.getConnect();
-		String sql = "select * from employee where dept = ?";
-
-		List<EmployeeDB> list = getEmpDept(empdb.getDept());
-		if (list.size() < 0) {
-			return list;
-		} else {
+//		List<EmployeeDB> list = getEmpDept(empdb.getDept());
+//		if (list.size() > 0) {
+//			return list;
+//		} else {
+			String sql = "select * from employee where dept = ?";
 			List<EmployeeDB> list1 = new ArrayList<>();
 			try {
 				pstmt = conn.prepareStatement(sql);
@@ -90,7 +89,7 @@ public class EmployeeDAO {
 					empldb.setDept(rs.getString("dept"));
 					empldb.setSalary(rs.getInt("salary"));
 					empldb.setDate(rs.getString("hire_date"));
-					list.add(empldb);
+					list1.add(empldb);
 
 				}
 			} catch (SQLException e) {
@@ -104,7 +103,7 @@ public class EmployeeDAO {
 			}
 			return list1;
 		}
-	}
+//	}
 
 	public List<EmployeeDB> getEmpDept(String dept) {
 		conn = DAO.getConnect();
@@ -138,7 +137,7 @@ public class EmployeeDAO {
 
 	public void updateEmpDept(EmployeeDB empdb) {
 		conn = DAO.getConnect();
-		String sql = "update employee set detp = ? where employee_id = ?";
+		String sql = "update employee set dept = ? where employee_id = ?";
 
 		try {
 			pstmt = conn.prepareStatement(sql);
