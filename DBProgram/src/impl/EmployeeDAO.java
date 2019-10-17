@@ -42,7 +42,7 @@ public class EmployeeDAO {
 		conn = DAO.getConnect();
 		EmployeeDB empl = null;
 		String sql = "select * from employee where name = ?";
-
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, name);
@@ -70,17 +70,13 @@ public class EmployeeDAO {
 
 	}
 
-	public List<EmployeeDB> getListByDept(EmployeeDB empdb) {
+	public List<EmployeeDB> getListByDept(EmployeeDB empdb) { // 전체 검색
 		conn = DAO.getConnect();
-		List<EmployeeDB> list = getEmpDept(empdb.getDept());
-		if (list.size() > 0) {
-			return list;
-		} else {
-		String sql = "select * from employee where dept = ?";
 		List<EmployeeDB> list1 = new ArrayList<>();
+		String sql = "select * from employee";
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, empdb.getDept());
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				EmployeeDB empldb = new EmployeeDB();
@@ -103,9 +99,9 @@ public class EmployeeDAO {
 		}
 		return list1;
 	}
-	}
 
-	public List<EmployeeDB> getEmpDept(String dept) {
+
+	public List<EmployeeDB> getEmpDept(String dept) { // 부서 검색 체크
 		conn = DAO.getConnect();
 		String sql = "select * from employee where dept = ?";
 		List<EmployeeDB> list = new ArrayList<>();
@@ -123,6 +119,7 @@ public class EmployeeDAO {
 				empl.setDate(rs.getString("hire_date"));
 				list.add(empl);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -132,7 +129,94 @@ public class EmployeeDAO {
 				e.printStackTrace();
 			}
 		}
+
 		return list;
+	}
+
+	public boolean checkDept(String dept) { // dept 유무 boolean 체크
+		conn = DAO.getConnect();
+		String sql = "select * from employee where dept = ?";
+		String dChk = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dept);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				dChk = rs.getString("dept");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (dChk != null) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	public boolean checkName(String name) { // Name 유무 boolean 체크
+		conn = DAO.getConnect();
+		String sql = "select * from employee where Name = ?";
+		String nChk = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				nChk = rs.getString("name");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (nChk != null) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
+	public boolean checkEmpId(int id) { // 사원 id 유무 boolean 체크
+		conn = DAO.getConnect();
+		String sql = "select * from employee where employee_id = ?";
+		String iChk = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				iChk = rs.getString("employee_id");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (iChk != null) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	public void updateEmpDept(EmployeeDB empdb) {
@@ -144,7 +228,7 @@ public class EmployeeDAO {
 			pstmt.setString(1, empdb.getDept());
 			pstmt.setInt(2, empdb.getId());
 			int r = pstmt.executeUpdate();
-		
+
 			System.out.println("사원 아이디" + empdb.getId() + "의 사원이 " + " 부서 이동되었습니다.");
 		} catch (SQLException e) {
 			e.printStackTrace();

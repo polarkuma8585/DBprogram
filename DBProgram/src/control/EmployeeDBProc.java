@@ -17,6 +17,7 @@ public class EmployeeDBProc {
 
 		while (true) {
 			int menu = 0;
+			System.out.println("인사 프로그램을 시작합니다.");
 			System.out.println("1. 사원등록 | 2. 사원이름 조회 | 3. 부서별 조회 | 4. 부서 변경 | 5. 퇴사 처리 | 6. 종료");
 			menu = sc.nextInt();
 			sc.nextLine();
@@ -33,9 +34,9 @@ public class EmployeeDBProc {
 				fireEmployee();
 			} else if (menu == 6) {
 				break;
-				
+
 			}
-			
+
 		}
 		System.out.println("인사 프로그램을 종료합니다.");
 
@@ -64,12 +65,18 @@ public class EmployeeDBProc {
 		System.out.println("조회할 사원 이름");
 		String name = sc.nextLine();
 		EmployeeDB empdb = service.getEmployee(name);
-		System.out.println("===============================");
-		System.out.println("사원아이디: " + empdb.getId());
-		System.out.println("사원 이름: " + empdb.getName());
-		System.out.println("소속 부서: " + empdb.getDept());
-		System.out.println("급여: " + empdb.getSalary());
-		System.out.println("입사일: " + empdb.getDate());
+
+		if (empdb != null) {
+			System.out.println("===============================");
+			System.out.println("사원아이디: " + empdb.getId());
+			System.out.println("사원 이름: " + empdb.getName());
+			System.out.println("소속 부서: " + empdb.getDept());
+			System.out.println("급여: " + empdb.getSalary());
+			System.out.println("입사일: " + empdb.getDate());
+			System.out.println("===============================");
+		} else {
+			System.out.println("존재하지 않는 사원입니다.");
+		}
 	}
 
 	public void getEmpListByDept() {
@@ -79,14 +86,16 @@ public class EmployeeDBProc {
 
 		EmployeeDB empdb = new EmployeeDB();
 		empdb.setDept(dept);
-		service.getDeptEmployee(empdb);
-//		System.out.println(empdb);
-		
-		System.out.println("소속 부서: "+ empdb.getDept());
-		System.out.println("사원아이디: " + empdb.getId());
-		System.out.println("사원 이름: " + empdb.getName());
-		System.out.println("급여: " + empdb.getSalary());
-		System.out.println("입사일: " + empdb.getDate());
+		List<EmployeeDB> empldb = service.getDeptEmployee(empdb);
+		for (EmployeeDB e : empldb) {
+			System.out.println("===============================");
+			System.out.println("사원아이디: " + e.getId());
+			System.out.println("사원 이름: " + e.getName());
+			System.out.println("소속 부서: " + e.getDept());
+			System.out.println("급여: " + e.getSalary());
+			System.out.println("입사일: " + e.getDate());
+			System.out.println("===============================");
+		}
 
 	}
 
