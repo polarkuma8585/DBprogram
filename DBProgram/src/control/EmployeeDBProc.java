@@ -33,6 +33,7 @@ public class EmployeeDBProc {
 				fireEmployee();
 			} else if (menu == 6) {
 				break;
+				
 			}
 			
 		}
@@ -62,8 +63,8 @@ public class EmployeeDBProc {
 		System.out.println("사원이름 조회");
 		System.out.println("조회할 사원 이름");
 		String name = sc.nextLine();
-		System.out.println("===============================");
 		EmployeeDB empdb = service.getEmployee(name);
+		System.out.println("===============================");
 		System.out.println("사원아이디: " + empdb.getId());
 		System.out.println("사원 이름: " + empdb.getName());
 		System.out.println("소속 부서: " + empdb.getDept());

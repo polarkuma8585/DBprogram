@@ -72,38 +72,38 @@ public class EmployeeDAO {
 
 	public List<EmployeeDB> getListByDept(EmployeeDB empdb) {
 		conn = DAO.getConnect();
-//		List<EmployeeDB> list = getEmpDept(empdb.getDept());
-//		if (list.size() > 0) {
-//			return list;
-//		} else {
-			String sql = "select * from employee where dept = ?";
-			List<EmployeeDB> list1 = new ArrayList<>();
-			try {
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, empdb.getDept());
-				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					EmployeeDB empldb = new EmployeeDB();
-					empldb.setId(rs.getInt("employee_id"));
-					empldb.setName(rs.getString("name"));
-					empldb.setDept(rs.getString("dept"));
-					empldb.setSalary(rs.getInt("salary"));
-					empldb.setDate(rs.getString("hire_date"));
-					list1.add(empldb);
+		List<EmployeeDB> list = getEmpDept(empdb.getDept());
+		if (list.size() > 0) {
+			return list;
+		} else {
+		String sql = "select * from employee where dept = ?";
+		List<EmployeeDB> list1 = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, empdb.getDept());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				EmployeeDB empldb = new EmployeeDB();
+				empldb.setId(rs.getInt("employee_id"));
+				empldb.setName(rs.getString("name"));
+				empldb.setDept(rs.getString("dept"));
+				empldb.setSalary(rs.getInt("salary"));
+				empldb.setDate(rs.getString("hire_date"));
+				list1.add(empldb);
 
-				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 			}
-			return list1;
 		}
-//	}
+		return list1;
+	}
+	}
 
 	public List<EmployeeDB> getEmpDept(String dept) {
 		conn = DAO.getConnect();
@@ -144,6 +144,7 @@ public class EmployeeDAO {
 			pstmt.setString(1, empdb.getDept());
 			pstmt.setInt(2, empdb.getId());
 			int r = pstmt.executeUpdate();
+		
 			System.out.println("사원 아이디" + empdb.getId() + "의 사원이 " + " 부서 이동되었습니다.");
 		} catch (SQLException e) {
 			e.printStackTrace();
